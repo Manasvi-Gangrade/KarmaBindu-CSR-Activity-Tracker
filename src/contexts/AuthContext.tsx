@@ -22,11 +22,11 @@ const DEMO_USERS: Record<string, { password: string; user: User }> = {
   },
   'faculty@demo.com': {
     password: 'demo123',
-    user: { id: '3', email: 'faculty@demo.com', name: 'Dr. Sathish Kumar Penchala', role: 'faculty', department: 'Computer Science & Engineering' },
+    user: { id: '3', email: 'faculty@demo.com', name: 'Dr. Shweta Agrawal', role: 'faculty', department: 'Artificial Intelligence and Machine Learning' },
   },
   'student@demo.com': {
     password: 'demo123',
-    user: { id: '4', email: 'student@demo.com', name: 'Adeesh Jain', role: 'student', department: 'Civil Engineering' },
+    user: { id: '4', email: 'student@demo.com', name: 'Manasvi Gangrade', role: 'student', department: 'Artificial Intelligence and Machine Learning' },
   },
 };
 

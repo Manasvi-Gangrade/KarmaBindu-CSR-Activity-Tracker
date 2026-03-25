@@ -1,11 +1,17 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Leaf, Eye, EyeOff } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+
+import img1 from '@/assets/img1.jpg';
+import img2 from '@/assets/img2.jpg';
+import img3 from '@/assets/img3.jpg';
+import img4 from '@/assets/img4.jpg';
+import iistBanner from '@/assets/iist-campus-banner.png';
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -25,118 +31,111 @@ const Login: React.FC = () => {
     if (success) {
       navigate('/dashboard');
     } else {
-      setError('Invalid email or password. Use one of the demo credentials below.');
+      setError('Invalid email or password.');
     }
   };
 
-  const demoAccounts = [
-    { label: 'Administrator', email: 'admin@demo.com' },
-    { label: 'NAAC Coordinator', email: 'naac@demo.com' },
-    { label: 'Faculty', email: 'faculty@demo.com' },
-    { label: 'Student', email: 'student@demo.com' },
-  ];
+  const getDynamicImage = () => {
+    if (email.includes('admin')) return img1;
+    if (email.includes('faculty')) return img2;
+    if (email.includes('student')) return img3;
+    if (email.includes('naac')) return img4;
+    return iistBanner;
+  };
+
+  const getRoleTitle = () => {
+    if (email.includes('admin')) return 'Administrator Portal';
+    if (email.includes('faculty')) return 'Faculty Portal';
+    if (email.includes('student')) return 'Student Portal';
+    if (email.includes('naac')) return 'NAAC Coordinator Portal';
+    return 'Command Center';
+  };
 
   return (
-    <div className="min-h-screen flex">
-      {/* Left panel — branding */}
-      <div className="hidden lg:flex lg:w-1/2 gradient-hero items-center justify-center p-12 relative overflow-hidden">
-        <div className="absolute inset-0 opacity-10">
-          {[...Array(6)].map((_, i) => (
-            <motion.div
-              key={i}
-              className="absolute w-64 h-64 rounded-full border border-primary/20"
-              style={{ left: `${(i % 3) * 35}%`, top: `${Math.floor(i / 3) * 50}%` }}
-              animate={{ scale: [1, 1.2, 1], opacity: [0.1, 0.3, 0.1] }}
-              transition={{ duration: 4, repeat: Infinity, delay: i * 0.7 }}
-            />
-          ))}
-        </div>
+    <div className="min-h-screen flex selection:bg-primary/20">
+      {/* Left panel — dynamic branding */}
+      <div className="hidden lg:flex lg:w-[45%] bg-black items-center justify-center relative overflow-hidden">
+        <AnimatePresence mode="wait">
+          <motion.img 
+            key={getDynamicImage()}
+            src={getDynamicImage()} 
+            initial={{ opacity: 0, scale: 1.05 }}
+            animate={{ opacity: 0.5, scale: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.6 }}
+            className="absolute inset-0 w-full h-full object-cover" 
+            alt="Dynamic Role Avatar" 
+          />
+        </AnimatePresence>
+        
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent pointer-events-none" />
+
         <motion.div
           initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}
-          className="relative z-10 text-center max-w-md"
+          className="relative z-10 text-center max-w-md p-8"
         >
-          <div className="w-20 h-20 rounded-2xl gradient-primary flex items-center justify-center mx-auto mb-8 shadow-glow">
-            <Leaf size={40} className="text-primary-foreground" />
+          <div className="w-20 h-20 rounded-2xl bg-white/10 backdrop-blur-md flex items-center justify-center mx-auto mb-8 shadow-glow border border-white/20">
+            <Leaf size={40} className="text-white" />
           </div>
-          <h1 className="font-display text-4xl font-bold text-primary-foreground mb-4">CSR Activity Tracker</h1>
-          <p className="text-primary-foreground/70 text-lg leading-relaxed">
-            Document & Report Community Service Activities with Impact Metrics for NAAC / NBA Accreditation Evidence
+          <h1 className="font-display text-4xl font-bold text-white mb-2">{getRoleTitle()}</h1>
+          <p className="text-white/70 text-lg leading-relaxed">
+            Secure access to the IIST CSR Activity Tracker. Document community impact for NAAC accreditation.
           </p>
-          <div className="mt-8 grid grid-cols-2 gap-4 text-left">
-            {[
-              { val: '2,847', label: 'Volunteer Hours' },
-              { val: '12,400+', label: 'Beneficiaries' },
-              { val: '68', label: 'Activities' },
-              { val: '34%', label: 'Participation' },
-            ].map((stat, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.8 + i * 0.15 }}
-                className="bg-primary-foreground/5 backdrop-blur-sm rounded-xl p-4 border border-primary-foreground/10"
-              >
-                <p className="font-display text-2xl font-bold text-primary-foreground">{stat.val}</p>
-                <p className="text-primary-foreground/50 text-xs mt-1">{stat.label}</p>
-              </motion.div>
-            ))}
-          </div>
         </motion.div>
       </div>
 
       {/* Right panel — form */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center p-6 lg:p-12 bg-background">
+      <div className="w-full lg:w-[55%] flex items-center justify-center p-6 lg:p-12 bg-background">
         <motion.div
           initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }}
           className="w-full max-w-md"
         >
           <div className="lg:hidden flex items-center gap-3 mb-8">
-            <div className="w-10 h-10 rounded-xl gradient-primary flex items-center justify-center">
+            <div className="w-10 h-10 rounded-xl gradient-primary flex items-center justify-center shadow-md">
               <Leaf size={22} className="text-primary-foreground" />
             </div>
-            <h1 className="font-display text-xl font-bold">CSR Tracker</h1>
+            <h1 className="font-display text-xl font-bold tracking-tight">IIST CSR Tracker</h1>
           </div>
 
-          <h2 className="font-display text-2xl font-bold mb-1">Welcome back</h2>
-          <p className="text-muted-foreground text-sm mb-8">Sign in to continue to your dashboard</p>
+          <h2 className="font-display text-3xl font-extrabold mb-2 text-foreground">Welcome back</h2>
+          <p className="text-muted-foreground text-sm mb-8 font-medium">Continue logging in to your dashboard</p>
 
           <form onSubmit={handleSubmit} className="space-y-5">
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
-              <Input id="email" type="email" placeholder="you@institution.edu" value={email} onChange={e => setEmail(e.target.value)} required />
+              <Label htmlFor="email">Email or Role identifier</Label>
+              <Input 
+                id="email" type="text" 
+                placeholder="e.g., student@demo.com" 
+                value={email} onChange={e => setEmail(e.target.value)} 
+                required 
+                className="h-12 bg-muted/30 focus-visible:ring-primary/50"
+              />
             </div>
             <div className="space-y-2">
               <Label htmlFor="password">Password</Label>
               <div className="relative">
-                <Input id="password" type={showPassword ? 'text' : 'password'} placeholder="••••••••" value={password} onChange={e => setPassword(e.target.value)} required />
-                <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground">
-                  {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                <Input 
+                  id="password" type={showPassword ? 'text' : 'password'} 
+                  placeholder="••••••••" value={password} onChange={e => setPassword(e.target.value)} 
+                  required 
+                  className="h-12 bg-muted/30 focus-visible:ring-primary/50"
+                />
+                <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground">
+                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
               </div>
             </div>
 
-            {error && <p className="text-destructive text-sm">{error}</p>}
+            {error && (
+              <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-destructive text-sm font-medium p-3 bg-destructive/10 rounded-lg">
+                {error}
+              </motion.p>
+            )}
 
-            <Button type="submit" className="w-full gradient-primary text-primary-foreground hover:opacity-90" disabled={loading}>
-              {loading ? 'Signing in...' : 'Sign In'}
+            <Button type="submit" className="w-full h-12 text-base font-bold shadow-md hover:shadow-lg transition-all" size="lg" disabled={loading}>
+              {loading ? 'Authenticating...' : 'Sign In Securely'}
             </Button>
           </form>
-
-          {/* Demo credentials */}
-          <div className="mt-8 p-4 rounded-xl bg-muted/50 border border-border">
-            <p className="text-xs font-semibold text-muted-foreground mb-3 uppercase tracking-wider">Demo Credentials (password: demo123)</p>
-            <div className="grid grid-cols-2 gap-2">
-              {demoAccounts.map(acc => (
-                <button
-                  key={acc.email}
-                  onClick={() => { setEmail(acc.email); setPassword('demo123'); }}
-                  className="text-left px-3 py-2 rounded-lg bg-card border border-border hover:border-primary/30 hover:shadow-sm transition-all text-xs"
-                >
-                  <p className="font-semibold text-foreground">{acc.label}</p>
-                  <p className="text-muted-foreground truncate">{acc.email}</p>
-                </button>
-              ))}
-            </div>
-          </div>
         </motion.div>
       </div>
     </div>

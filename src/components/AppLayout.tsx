@@ -17,15 +17,15 @@ interface NavItem {
 
 const navItems: NavItem[] = [
   { label: 'Dashboard', path: '/dashboard', icon: <LayoutDashboard size={18} />, roles: ['admin', 'naac_coordinator', 'faculty', 'student'] },
-  { label: 'Activities', path: '/activities', icon: <ClipboardList size={18} />, roles: ['admin', 'naac_coordinator', 'faculty', 'student'] },
-  { label: 'Create Activity', path: '/activities/create', icon: <CalendarPlus size={18} />, roles: ['admin', 'naac_coordinator', 'faculty'] },
-  { label: 'Volunteers', path: '/volunteers', icon: <Users size={18} />, roles: ['admin', 'naac_coordinator', 'faculty'] },
+  { label: 'Activities', path: '/activities', icon: <ClipboardList size={18} />, roles: ['admin', 'faculty', 'student'] },
+  { label: 'Create Activity', path: '/activities/create', icon: <CalendarPlus size={18} />, roles: ['admin', 'faculty'] },
+  { label: 'Volunteers', path: '/volunteers', icon: <Users size={18} />, roles: ['admin', 'faculty'] },
   { label: 'Reports', path: '/reports', icon: <FileText size={18} />, roles: ['admin', 'naac_coordinator'] },
   { label: 'Approvals', path: '/approvals', icon: <Award size={18} />, roles: ['admin', 'naac_coordinator'] },
-  { label: 'Certificates', path: '/certificates', icon: <ScrollText size={18} />, roles: ['admin', 'naac_coordinator', 'faculty'] },
-  { label: 'Impact Map', path: '/heat-map', icon: <MapPin size={18} />, roles: ['admin', 'naac_coordinator', 'faculty', 'student'] },
+  { label: 'Certificates', path: '/certificates', icon: <ScrollText size={18} />, roles: ['admin', 'faculty', 'student'] },
+  { label: 'Impact Map', path: '/heat-map', icon: <MapPin size={18} />, roles: ['admin'] },
   { label: 'AI Agents', path: '/ai-agents', icon: <Bot size={18} className="text-yellow-300" />, roles: ['admin', 'naac_coordinator'] },
-  { label: 'Settings', path: '/settings', icon: <Settings size={18} />, roles: ['admin', 'naac_coordinator', 'faculty', 'student'] },
+  { label: 'Settings', path: '/settings', icon: <Settings size={18} />, roles: ['admin'] },
 ];
 
 const AppLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {

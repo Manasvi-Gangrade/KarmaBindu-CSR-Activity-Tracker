@@ -31,9 +31,29 @@ const AIAgents: React.FC = () => {
   const [generating, setGenerating] = useState(false);
   const [report, setReport] = useState('');
 
+  // Gamification State
+  const [awardingBadge, setAwardingBadge] = useState(false);
+  const [badgeAwarded, setBadgeAwarded] = useState(false);
+
   // Grants State
   const [draftingGrant, setDraftingGrant] = useState(false);
   const [grantResult, setGrantResult] = useState(false);
+
+  const handleAwardBadge = () => {
+    setAwardingBadge(true);
+    toast.promise(
+      new Promise(resolve => setTimeout(resolve, 2000)),
+      {
+        loading: 'Analyzing department participation ratios...',
+        success: () => {
+          setAwardingBadge(false);
+          setBadgeAwarded(true);
+          return '🏆 Badge Awarded to Artificial Intelligence and Machine Learning!';
+        },
+        error: 'Engine failure'
+      }
+    );
+  };
 
   const handleDraftGrant = () => {
     setDraftingGrant(true);
@@ -83,7 +103,7 @@ const AIAgents: React.FC = () => {
   const handleGenerateReport = () => {
     setGenerating(true);
     setReport('');
-    const fullText = "## Annual CSR Impact Summary 2026\n\nThis year, Indore Institute of Science & Technology achieved unprecedented growth in community engagement. Over **2,847 volunteer hours** were logged across **68 activities**, deeply impacting **12,400+ beneficiaries**.\n\n### Key Highlights:\n- 100% compliance with AICTE mandatory 40-hour requirement for 3rd-year students.\n- Prominent outreach in rural healthcare and digital literacy.\n- Seamless alignment with NAAC Criterion III extension goals.";
+    const fullText = "## Annual CSR Impact Summary 2026\n\nThis year, Indore Institute of Science & Technology achieved unprecedented growth in community engagement. Over **2,847 volunteer hours** were logged across **68 activities**, deeply impacting **12,400+ beneficiaries**.\n\n### Key Highlights:\n- 100% compliance with AICTE mandatory 40-hour requirement for 3rd-year students.\n- Prominent outreach in rural healthcare and digital literacy.\n- Artificial Intelligence and Machine Learning department led the charge with a 145% increase in participation.\n- Seamless alignment with NAAC Criterion III extension goals.";
     
     let i = 0;
     const interval = setInterval(() => {
@@ -92,9 +112,9 @@ const AIAgents: React.FC = () => {
       if (i > fullText.length) {
         clearInterval(interval);
         setGenerating(false);
-        toast.success("NBA/NAAC Report Generated.");
+        toast.success("NBA/NAAC Report Generated successfully.");
       }
-    }, 20);
+    }, 15);
   };
 
   const tabs = [
@@ -317,9 +337,9 @@ const AIAgents: React.FC = () => {
                 </div>
                 <div className="grid grid-cols-1 gap-3 mt-4">
                   {[
-                    { rank: 1, dept: 'Computer Science', points: 1240, color: 'bg-accent/20 text-accent-foreground border-accent/40' },
-                    { rank: 2, dept: 'Information Tech', points: 980, color: 'bg-muted/50 text-foreground border-border' },
-                    { rank: 3, dept: 'Electronics', points: 850, color: 'bg-primary/5 text-primary border-primary/20' },
+                    { rank: 1, dept: 'Artificial Intelligence & ML', points: 1540, color: badgeAwarded ? 'bg-[#FFD700]/20 text-yellow-600 border-[#FFD700] ring-4 ring-[#FFD700]/30 transition-all duration-500 shadow-[0_0_30px_rgba(255,215,0,0.3)] scale-[1.02]' : 'bg-accent/20 text-accent-foreground border-accent/40 transition-all' },
+                    { rank: 2, dept: 'Computer Science', points: 1240, color: 'bg-muted/50 text-foreground border-border' },
+                    { rank: 3, dept: 'Information Technology', points: 980, color: 'bg-primary/5 text-primary border-primary/20' },
                   ].map(d => (
                     <div key={d.rank} className={`flex items-center justify-between p-4 rounded-xl border shadow-sm ${d.color}`}>
                       <div className="flex items-center gap-4">
@@ -330,7 +350,15 @@ const AIAgents: React.FC = () => {
                     </div>
                   ))}
                 </div>
-                <Button variant="outline" className="w-full mt-4 text-primary border-primary/30 hover:bg-primary/5">Award Weekly Badge Automatically</Button>
+                <Button 
+                  onClick={handleAwardBadge} 
+                  disabled={awardingBadge || badgeAwarded} 
+                  variant="outline" 
+                  className={`w-full mt-4 border-primary/30 transition-all ${badgeAwarded ? 'bg-success/10 text-success border-success/30' : 'text-primary hover:bg-primary/5'}`}
+                >
+                  {awardingBadge ? <Sparkles size={16} className="mr-2 animate-spin" /> : <Trophy size={16} className="mr-2" />}
+                  {awardingBadge ? 'Computing Badges...' : badgeAwarded ? 'Badge Awarded to Top Dept' : 'Award Weekly Badge Automatically'}
+                </Button>
               </motion.div>
             )}
 

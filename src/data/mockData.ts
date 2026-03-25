@@ -89,46 +89,37 @@ export const activities: Activity[] = [
 ];
 
 export const volunteers: Volunteer[] = [
-  { id: '1', name: 'Adeesh Jain', enrollmentNo: '0818CL231003', department: 'Civil Engineering', year: 'II', totalHours: 120, activitiesCount: 8, email: 'adeesh.jain@iist.edu', phone: '9876543210', nssUnit: 'Unit 1' },
-  { id: '2', name: 'Aditya Chouksey', enrollmentNo: '0818CL231004', department: 'Civil Engineering', year: 'II', totalHours: 95, activitiesCount: 6, email: 'aditya.chouksey@iist.edu', phone: '9876543211', nssUnit: 'Unit 1' },
-  { id: '3', name: 'Aditya Singh Rajput', enrollmentNo: '0818CL231005', department: 'Civil Engineering', year: 'II', totalHours: 78, activitiesCount: 5, email: 'aditya.rajput@iist.edu', phone: '9876543212', nssUnit: 'Unit 2' },
-  { id: '4', name: 'Alkesh Patidar', enrollmentNo: '0818CL231007', department: 'Civil Engineering', year: 'II', totalHours: 110, activitiesCount: 7, email: 'alkesh.patidar@iist.edu', phone: '9876543213' },
-  { id: '5', name: 'Anshika Punase', enrollmentNo: '0818CL231008', department: 'Civil Engineering', year: 'II', totalHours: 65, activitiesCount: 4, email: 'anshika.punase@iist.edu', phone: '9876543214', nssUnit: 'Unit 2' },
-  { id: '6', name: 'Anuj Singh Parihar', enrollmentNo: '0818CL231009', department: 'Civil Engineering', year: 'II', totalHours: 88, activitiesCount: 6, email: 'anuj.parihar@iist.edu', phone: '9876543215', nssUnit: 'Unit 1' },
-  { id: '7', name: 'Aryan Thakur', enrollmentNo: '0818CL231011', department: 'Civil Engineering', year: 'II', totalHours: 45, activitiesCount: 3, email: 'aryan.thakur@iist.edu', phone: '9876543216' },
-  { id: '8', name: 'Ayushmaan Rathore', enrollmentNo: '0818CL231015', department: 'Civil Engineering', year: 'II', totalHours: 102, activitiesCount: 7, email: 'ayushmaan.rathore@iist.edu', phone: '9876543217', nssUnit: 'Unit 1' },
-  { id: '9', name: 'Bhavesh Prajapat', enrollmentNo: '0818CL231016', department: 'Civil Engineering', year: 'II', totalHours: 72, activitiesCount: 5, email: 'bhavesh.prajapat@iist.edu', phone: '9876543218' },
-  { id: '10', name: 'Darpan Naganpuriya', enrollmentNo: '0818CL231019', department: 'Civil Engineering', year: 'II', totalHours: 55, activitiesCount: 4, email: 'darpan.n@iist.edu', phone: '9876543219', nssUnit: 'Unit 2' },
-  { id: '11', name: 'Deepanshu Gupta', enrollmentNo: '0818CL231020', department: 'Civil Engineering', year: 'II', totalHours: 90, activitiesCount: 6, email: 'deepanshu.gupta@iist.edu', phone: '9876543220' },
-  { id: '12', name: 'Deepanshu Maheshwari', enrollmentNo: '0818CL231021', department: 'Civil Engineering', year: 'II', totalHours: 67, activitiesCount: 4, email: 'deepanshu.m@iist.edu', phone: '9876543221', nssUnit: 'Unit 1' },
-  { id: '13', name: 'Diksha Akvean', enrollmentNo: '0818CL231023', department: 'Civil Engineering', year: 'II', totalHours: 84, activitiesCount: 5, email: 'diksha.a@iist.edu', phone: '9876543222' },
-  { id: '14', name: 'Hariom Khete', enrollmentNo: '0818CL231027', department: 'Civil Engineering', year: 'II', totalHours: 48, activitiesCount: 3, email: 'hariom.k@iist.edu', phone: '9876543223', nssUnit: 'Unit 2' },
-  { id: '15', name: 'Harshita Soni', enrollmentNo: '0818CL231028', department: 'Civil Engineering', year: 'II', totalHours: 115, activitiesCount: 8, email: 'harshita.s@iist.edu', phone: '9876543224' },
-  { id: '16', name: 'Hitanshi Upadhyay', enrollmentNo: '0818CL231029', department: 'Civil Engineering', year: 'II', totalHours: 73, activitiesCount: 5, email: 'hitanshi.u@iist.edu', phone: '9876543225', nssUnit: 'Unit 1' },
+  // AI & ML Top Students
+  { id: '4', name: 'Manasvi Gangrade', enrollmentNo: '0818AL231040', department: 'Artificial Intelligence and Machine Learning', year: 'II', totalHours: 145, activitiesCount: 12, email: 'student@demo.com', phone: '9876543231', nssUnit: 'Unit 2' },
+  { id: '1', name: 'Ayush Sharma', enrollmentNo: '0818AL231011', department: 'Artificial Intelligence and Machine Learning', year: 'II', totalHours: 120, activitiesCount: 8, email: 'ayush.s@iist.edu', phone: '9876543210', nssUnit: 'Unit 1' },
+  { id: '2', name: 'Kabir Rathore', enrollmentNo: '0818AL231012', department: 'Artificial Intelligence and Machine Learning', year: 'II', totalHours: 95, activitiesCount: 6, email: 'kabir.r@iist.edu', phone: '9876543211' },
+  { id: '3', name: 'Sneha Verma', enrollmentNo: '0818AL231013', department: 'Artificial Intelligence and Machine Learning', year: 'II', totalHours: 110, activitiesCount: 9, email: 'sneha.v@iist.edu', phone: '9876543212', nssUnit: 'Unit 1' },
+  { id: '5', name: 'Rahul Joshi', enrollmentNo: '0818AL231014', department: 'Artificial Intelligence and Machine Learning', year: 'II', totalHours: 85, activitiesCount: 5, email: 'rahul.j@iist.edu', phone: '9876543213', nssUnit: 'Unit 2' },
+  { id: '6', name: 'Ananya Singh', enrollmentNo: '0818AL231015', department: 'Artificial Intelligence and Machine Learning', year: 'III', totalHours: 130, activitiesCount: 10, email: 'ananya.s@iist.edu', phone: '9876543214' },
+  
+  // Computer Science & Engineering
+  { id: '7', name: 'Aryan Thakur', enrollmentNo: '0818CS231011', department: 'Computer Science & Engineering', year: 'II', totalHours: 102, activitiesCount: 7, email: 'aryan.t@iist.edu', phone: '9876543216' },
+  { id: '8', name: 'Nandini Patel', enrollmentNo: '0818CS231015', department: 'Computer Science & Engineering', year: 'II', totalHours: 88, activitiesCount: 6, email: 'nandini.p@iist.edu', phone: '9876543217', nssUnit: 'Unit 1' },
+  { id: '9', name: 'Bhavesh Prajapat', enrollmentNo: '0818CS231016', department: 'Computer Science & Engineering', year: 'III', totalHours: 72, activitiesCount: 5, email: 'bhavesh.p@iist.edu', phone: '9876543218' },
+  { id: '10', name: 'Kratika Kachole', enrollmentNo: '0818CS231019', department: 'Computer Science & Engineering', year: 'I', totalHours: 55, activitiesCount: 4, email: 'kratika.k@iist.edu', phone: '9876543219', nssUnit: 'Unit 2' },
+  { id: '11', name: 'Deepanshu Gupta', enrollmentNo: '0818CS231020', department: 'Computer Science & Engineering', year: 'I', totalHours: 90, activitiesCount: 6, email: 'deepanshu.g@iist.edu', phone: '9876543220' },
+
+  // Information Technology
+  { id: '12', name: 'Neha Chouksey', enrollmentNo: '0818IT231021', department: 'Information Technology', year: 'IV', totalHours: 167, activitiesCount: 14, email: 'neha.c@iist.edu', phone: '9876543221', nssUnit: 'Unit 1' },
+  { id: '13', name: 'Diksha Tiwari', enrollmentNo: '0818IT231023', department: 'Information Technology', year: 'II', totalHours: 84, activitiesCount: 5, email: 'diksha.t@iist.edu', phone: '9876543222' },
+  { id: '14', name: 'Hariom Patidar', enrollmentNo: '0818IT231027', department: 'Information Technology', year: 'II', totalHours: 48, activitiesCount: 3, email: 'hariom.p@iist.edu', phone: '9876543223', nssUnit: 'Unit 2' },
+
+  // Electronics & Communication
+  { id: '15', name: 'Harshita Soni', enrollmentNo: '0818EC231028', department: 'Electronics & Communication', year: 'III', totalHours: 115, activitiesCount: 8, email: 'harshita.s@iist.edu', phone: '9876543224' },
+  { id: '16', name: 'Hitanshi Upadhyay', enrollmentNo: '0818EC231029', department: 'Electronics & Communication', year: 'II', totalHours: 73, activitiesCount: 5, email: 'hitanshi.u@iist.edu', phone: '9876543225', nssUnit: 'Unit 1' },
+  
+  // Civil Engineering
   { id: '17', name: 'Jayesh Mathankar', enrollmentNo: '0818CL231031', department: 'Civil Engineering', year: 'II', totalHours: 60, activitiesCount: 4, email: 'jayesh.m@iist.edu', phone: '9876543226' },
   { id: '18', name: 'Kanak Rawat', enrollmentNo: '0818CL231032', department: 'Civil Engineering', year: 'II', totalHours: 92, activitiesCount: 6, email: 'kanak.r@iist.edu', phone: '9876543227', nssUnit: 'Unit 2' },
-  { id: '19', name: 'Kratika Kachole', enrollmentNo: '0818CL231035', department: 'Civil Engineering', year: 'II', totalHours: 80, activitiesCount: 5, email: 'kratika.k@iist.edu', phone: '9876543228' },
-  { id: '20', name: 'Krishna Kavishwar', enrollmentNo: '0818CL231036', department: 'Civil Engineering', year: 'II', totalHours: 56, activitiesCount: 4, email: 'krishna.k@iist.edu', phone: '9876543229', nssUnit: 'Unit 1' },
-  { id: '21', name: 'Kunal Patidar', enrollmentNo: '0818CL231038', department: 'Civil Engineering', year: 'II', totalHours: 100, activitiesCount: 7, email: 'kunal.p@iist.edu', phone: '9876543230' },
-  { id: '22', name: 'Manasvi Gangrade', enrollmentNo: '0818CL231040', department: 'Civil Engineering', year: 'II', totalHours: 42, activitiesCount: 3, email: 'manasvi.g@iist.edu', phone: '9876543231', nssUnit: 'Unit 2' },
-  { id: '23', name: 'Mohit Sen', enrollmentNo: '0818CL231042', department: 'Civil Engineering', year: 'II', totalHours: 76, activitiesCount: 5, email: 'mohit.sen@iist.edu', phone: '9876543232' },
-  { id: '24', name: 'Monty Kushwaha', enrollmentNo: '0818CL231043', department: 'Civil Engineering', year: 'II', totalHours: 63, activitiesCount: 4, email: 'monty.k@iist.edu', phone: '9876543233', nssUnit: 'Unit 1' },
-  { id: '25', name: 'Muskan Lodhi', enrollmentNo: '0818CL231045', department: 'Civil Engineering', year: 'II', totalHours: 88, activitiesCount: 6, email: 'muskan.l@iist.edu', phone: '9876543234' },
-  { id: '26', name: 'Nandini Singh', enrollmentNo: '0818CL231046', department: 'Civil Engineering', year: 'II', totalHours: 71, activitiesCount: 5, email: 'nandini.s@iist.edu', phone: '9876543235', nssUnit: 'Unit 2' },
-  { id: '27', name: 'Nayan Adlak', enrollmentNo: '0818CL231047', department: 'Civil Engineering', year: 'II', totalHours: 54, activitiesCount: 4, email: 'nayan.a@iist.edu', phone: '9876543236' },
-  { id: '28', name: 'Nishita Kanojiya', enrollmentNo: '0818CL231048', department: 'Civil Engineering', year: 'II', totalHours: 97, activitiesCount: 7, email: 'nishita.k@iist.edu', phone: '9876543237', nssUnit: 'Unit 1' },
-  { id: '29', name: 'Palak Sharma', enrollmentNo: '0818CL231049', department: 'Civil Engineering', year: 'II', totalHours: 82, activitiesCount: 5, email: 'palak.s@iist.edu', phone: '9876543238' },
-  { id: '30', name: 'Piyushi Patel', enrollmentNo: '0818CL231050', department: 'Civil Engineering', year: 'II', totalHours: 68, activitiesCount: 4, email: 'piyushi.p@iist.edu', phone: '9876543239', nssUnit: 'Unit 2' },
-  { id: '31', name: 'Aaradhya Rassay', enrollmentNo: '0818CL231001', department: 'Civil Engineering', year: 'II', totalHours: 93, activitiesCount: 6, email: 'aaradhya.r@iist.edu', phone: '9876543240' },
-  { id: '32', name: 'Adarsh Tiwari', enrollmentNo: '0818CL231002', department: 'Civil Engineering', year: 'II', totalHours: 50, activitiesCount: 3, email: 'adarsh.t@iist.edu', phone: '9876543241', nssUnit: 'Unit 1' },
-  { id: '33', name: 'Arpit Mishra', enrollmentNo: '0818CL231010', department: 'Civil Engineering', year: 'II', totalHours: 77, activitiesCount: 5, email: 'arpit.m@iist.edu', phone: '9876543242' },
-  { id: '34', name: 'Ashish Baraskar', enrollmentNo: '0818CL231012', department: 'Civil Engineering', year: 'II', totalHours: 61, activitiesCount: 4, email: 'ashish.b@iist.edu', phone: '9876543243', nssUnit: 'Unit 2' },
-  { id: '35', name: 'Ashish Chouhan', enrollmentNo: '0818CL231013', department: 'Civil Engineering', year: 'II', totalHours: 105, activitiesCount: 7, email: 'ashish.c@iist.edu', phone: '9876543244' },
-  { id: '36', name: 'Atharv Yadav', enrollmentNo: '0818CL221005', department: 'Civil Engineering', year: 'III', totalHours: 130, activitiesCount: 9, email: 'atharv.y@iist.edu', phone: '9876543245', nssUnit: 'Unit 1' },
-  { id: '37', name: 'Atharva Barve', enrollmentNo: '0818CL231014', department: 'Civil Engineering', year: 'II', totalHours: 44, activitiesCount: 3, email: 'atharva.b@iist.edu', phone: '9876543246' },
-  { id: '38', name: 'Chanchal Rathore', enrollmentNo: '0818CL231018', department: 'Civil Engineering', year: 'II', totalHours: 85, activitiesCount: 6, email: 'chanchal.r@iist.edu', phone: '9876543247', nssUnit: 'Unit 2' },
-  { id: '39', name: 'Saptak Gupta', enrollmentNo: '0818CL231063', department: 'Civil Engineering', year: 'II', totalHours: 74, activitiesCount: 5, email: 'saptak.g@iist.edu', phone: '9876543248' },
-  { id: '40', name: 'Shreyansh Gupta', enrollmentNo: '0818CL231068', department: 'Civil Engineering', year: 'II', totalHours: 98, activitiesCount: 7, email: 'shreyansh.g@iist.edu', phone: '9876543249', nssUnit: 'Unit 1' },
+  
+  // Mechanical Engineering
+  { id: '19', name: 'Mohit Sen', enrollmentNo: '0818ME231042', department: 'Mechanical Engineering', year: 'II', totalHours: 76, activitiesCount: 5, email: 'mohit.sen@iist.edu', phone: '9876543232' },
+  { id: '20', name: 'Krishna Kavishwar', enrollmentNo: '0818ME231036', department: 'Mechanical Engineering', year: 'III', totalHours: 56, activitiesCount: 4, email: 'krishna.k@iist.edu', phone: '9876543229', nssUnit: 'Unit 1' },
 ];
 
 export const categoryColors: Record<string, string> = {

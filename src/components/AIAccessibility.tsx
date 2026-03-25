@@ -62,16 +62,20 @@ export const TTSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         }
 
         // Try to find a voice that matches the selected language
-        let preferredVoice = voices.find(v => v.lang.startsWith(lang as string) || v.lang.startsWith(lang?.toLowerCase() as string));
-
-        // Final Fallback for all cases
-        if (!preferredVoice) {
-            preferredVoice = voices.find(v => v.lang.startsWith("en-US") || v.name.includes("Google US"));
+        let preferredVoice;
+        if (lang === 'hi') {
+            preferredVoice = voices.find(v => v.name.includes("Google हिन्दी") || v.name.includes("Google Hindi")) || 
+                             voices.find(v => v.lang.startsWith("hi"));
+        } else {
+             preferredVoice = voices.find(v => v.lang.startsWith("en-US") || v.name.includes("Google US") || v.lang.startsWith("en"));
         }
 
         if (preferredVoice) {
             utterance.voice = preferredVoice;
         }
+
+        // Slightly slower read speed to prevent stuttering issues (especially in Hindi)
+        utterance.rate = lang === 'hi' ? 0.85 : 0.95;
 
         utterance.onstart = () => setSpeaking(true);
         utterance.onend = () => setSpeaking(false);

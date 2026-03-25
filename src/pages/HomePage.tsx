@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight, Users, Award, BookOpen, MapPin, Phone, Mail, Globe, ChevronDown, Send, Bot, User, Sparkles, MessageSquare, Volume2, VolumeX } from 'lucide-react';
+import { ArrowRight, Users, Award, BookOpen, MapPin, Phone, Mail, Globe, ChevronDown, Send, Bot, User, Sparkles, MessageSquare, Volume2, VolumeX, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import iistLogos from '@/assets/iist-logos.png';
 import iistBanner from '@/assets/iist-campus-banner.png';
@@ -79,6 +79,7 @@ const HomePage: React.FC = () => {
   ]);
   const [input, setInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
+  const [showChatbot, setShowChatbot] = useState(false);
   const chatEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -134,29 +135,30 @@ const HomePage: React.FC = () => {
             <img src={iistLogos} alt="IIST IIP IIMR Logos" className="h-10 md:h-12 object-contain" />
           </div>
           
-          {/* Accessibility & Translation - Center */}
-          <div className="hidden lg:flex justify-center flex-row items-center gap-4 z-0">
+          {/* Live Time & Weather - Center */}
+          <div className="hidden lg:flex justify-center flex-row flex-wrap items-center gap-2 md:gap-3 text-sm font-semibold">
+            <div className="flex items-center gap-2 px-3 py-1 bg-accent/20 border border-accent/20 text-accent-foreground rounded-full shadow-sm whitespace-nowrap">
+              <span className="text-sm leading-none">☀️</span> <span>28°C Indore</span>
+            </div>
+            <div className="flex items-center gap-2 px-4 py-1 bg-primary/10 border border-primary/20 text-primary rounded-full shadow-sm font-mono tracking-wide whitespace-nowrap">
+              <span>{currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+            </div>
+          </div>
+
+          {/* Accessibility & Translation - Right */}
+          <div className="flex justify-end items-center w-full lg:w-auto gap-3 z-10">
             <button 
               onClick={() => setTtsEnabled(!ttsEnabled)}
               className={`flex items-center gap-2 px-3 py-1.5 rounded-full shadow-sm border transition-colors ${ttsEnabled ? 'bg-primary/10 border-primary/20 text-primary' : 'bg-muted border-border text-muted-foreground'}`}
               title="Toggle Hover-to-Speak"
             >
               {ttsEnabled ? <Volume2 size={16} /> : <VolumeX size={16} />}
-              <span className="text-xs font-bold uppercase tracking-wider">{ttsEnabled ? 'Voice On' : 'Voice Off'}</span>
+              <span className="text-xs font-bold uppercase tracking-wider hidden sm:inline">{ttsEnabled ? 'Voice On' : 'Voice Off'}</span>
             </button>
             <div className="bg-muted/50 rounded-full px-2 py-1 shadow-sm border border-border">
               <GoogleTranslateWidget />
             </div>
           </div>
-
-          {/* Navigation - Right */}
-          <nav className="flex justify-end items-center w-full lg:w-auto gap-2 md:gap-3 text-xs md:text-sm font-bold z-10 overflow-x-auto pb-1 lg:pb-0 scrollbar-hide">
-            <a href="#about" className="px-3 md:px-4 py-1.5 rounded-full bg-primary/10 text-primary hover:bg-primary/20 transition-colors shadow-sm whitespace-nowrap">About</a>
-            <a href="#chat" className="px-3 md:px-4 py-1.5 rounded-full bg-primary/10 text-primary hover:bg-primary/20 transition-colors shadow-sm whitespace-nowrap">AI Assistant</a>
-            <a href="#faculty" className="px-3 md:px-4 py-1.5 rounded-full bg-primary/10 text-primary hover:bg-primary/20 transition-colors shadow-sm whitespace-nowrap">Faculty</a>
-            <a href="#departments" className="px-3 md:px-4 py-1.5 rounded-full bg-primary/10 text-primary hover:bg-primary/20 transition-colors shadow-sm whitespace-nowrap">Departments</a>
-            <a href="#contact" className="px-3 md:px-4 py-1.5 rounded-full bg-primary/10 text-primary hover:bg-primary/20 transition-colors shadow-sm whitespace-nowrap">Contact</a>
-          </nav>
         </div>
       </header>
 
@@ -165,15 +167,7 @@ const HomePage: React.FC = () => {
         <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-background to-background pointer-events-none" />
         <div className="relative max-w-7xl mx-auto px-4 pt-12 pb-8 md:pt-16 md:pb-12 text-center">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
-            {/* Time & Weather - Re-located to Hero */}
-            <div className="flex justify-center flex-wrap items-center gap-2 md:gap-3 text-sm font-semibold mb-6">
-              <div className="flex items-center gap-2 px-4 py-1.5 bg-accent/20 border border-accent/20 text-accent-foreground rounded-full shadow-sm whitespace-nowrap backdrop-blur-sm">
-                <span className="text-lg leading-none">☀️</span> <span>28°C Indore</span>
-              </div>
-              <div className="flex items-center gap-2 px-5 py-1.5 bg-primary/10 border border-primary/20 text-primary rounded-full shadow-sm font-mono tracking-wide whitespace-nowrap backdrop-blur-sm">
-                <span>{currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
-              </div>
-            </div>
+
 
             <h1 className="font-display text-2xl md:text-4xl lg:text-5xl font-extrabold text-foreground leading-tight mb-4 tracking-tight">
               Indore Institute of Science & Technology
@@ -250,6 +244,8 @@ const HomePage: React.FC = () => {
         </div>
       </section>
 
+
+
       {/* Quick Login Portals */}
       <section className="max-w-7xl mx-auto px-4 pb-16 relative z-10 cursor-pointer">
         <motion.div 
@@ -281,138 +277,7 @@ const HomePage: React.FC = () => {
         </motion.div>
       </section>
 
-      {/* AI Chat Section */}
-      <section id="chat" className="relative py-20 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-muted/50 via-muted/30 to-background" />
-        <div className="relative max-w-4xl mx-auto px-4">
-          <div className="text-center mb-10">
-            <motion.div initial={{ opacity: 0, y: 15 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
-              <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground mb-3">AI Assistant</h2>
-              <p className="text-muted-foreground max-w-lg mx-auto">
-                Ask questions about CSR activities, NAAC criteria, or get instant analytics
-              </p>
-            </motion.div>
-          </div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }} transition={{ delay: 0.15 }}
-            className="relative"
-          >
-            <div className="absolute -inset-1 rounded-3xl bg-gradient-to-r from-primary/20 via-accent/20 to-primary/20 blur-lg opacity-50" />
-            <div className="relative rounded-2xl border border-border bg-card shadow-xl overflow-hidden flex flex-col" style={{ height: '520px' }}>
-              {/* Chat Header */}
-              <div className="flex items-center gap-3 px-5 py-3.5 border-b border-border bg-muted/30">
-                <div className="w-9 h-9 rounded-full gradient-primary flex items-center justify-center">
-                  <Bot size={18} className="text-primary-foreground" />
-                </div>
-                <div>
-                  <p className="font-display font-semibold text-foreground text-sm">IIST CSR Assistant</p>
-                  <p className="text-muted-foreground text-xs">Ask about activities, reports & NAAC criteria</p>
-                </div>
-                <div className="ml-auto flex items-center gap-1.5">
-                  <span className="w-2 h-2 rounded-full bg-success animate-pulse" />
-                  <span className="text-xs text-muted-foreground">Online</span>
-                </div>
-              </div>
-
-              {/* Messages */}
-              <div className="flex-1 overflow-y-auto px-5 py-4 space-y-4">
-                <AnimatePresence>
-                  {messages.map((msg) => (
-                    <motion.div
-                      key={msg.id}
-                      initial={{ opacity: 0, y: 8 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.25 }}
-                      className={`flex gap-2.5 ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
-                    >
-                      {msg.role === 'assistant' && (
-                        <div className="w-7 h-7 rounded-full gradient-primary flex-shrink-0 flex items-center justify-center mt-0.5">
-                          <Bot size={14} className="text-primary-foreground" />
-                        </div>
-                      )}
-                      <div
-                        className={`max-w-[75%] rounded-2xl px-4 py-2.5 text-sm leading-relaxed whitespace-pre-line ${
-                          msg.role === 'user'
-                            ? 'bg-primary text-primary-foreground rounded-br-md'
-                            : 'bg-muted text-foreground rounded-bl-md'
-                        }`}
-                      >
-                        {msg.content.split(/(\*\*.*?\*\*)/).map((part, i) =>
-                          part.startsWith('**') && part.endsWith('**') ? (
-                            <strong key={i} className="font-semibold">{part.slice(2, -2)}</strong>
-                          ) : (
-                            <span key={i}>{part}</span>
-                          )
-                        )}
-                      </div>
-                      {msg.role === 'user' && (
-                        <div className="w-7 h-7 rounded-full bg-secondary flex-shrink-0 flex items-center justify-center mt-0.5">
-                          <User size={14} className="text-secondary-foreground" />
-                        </div>
-                      )}
-                    </motion.div>
-                  ))}
-                </AnimatePresence>
-
-                {isTyping && (
-                  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex gap-2.5">
-                    <div className="w-7 h-7 rounded-full gradient-primary flex-shrink-0 flex items-center justify-center">
-                      <Bot size={14} className="text-primary-foreground" />
-                    </div>
-                    <div className="bg-muted rounded-2xl rounded-bl-md px-4 py-3 flex items-center gap-1">
-                      <span className="w-1.5 h-1.5 rounded-full bg-muted-foreground/50 animate-bounce" style={{ animationDelay: '0ms' }} />
-                      <span className="w-1.5 h-1.5 rounded-full bg-muted-foreground/50 animate-bounce" style={{ animationDelay: '150ms' }} />
-                      <span className="w-1.5 h-1.5 rounded-full bg-muted-foreground/50 animate-bounce" style={{ animationDelay: '300ms' }} />
-                    </div>
-                  </motion.div>
-                )}
-                <div ref={chatEndRef} />
-              </div>
-
-              {/* Suggested Questions */}
-              {messages.length <= 1 && (
-                <div className="px-5 pb-2 flex flex-wrap gap-2">
-                  {suggestedQuestions.map((q, i) => (
-                    <button
-                      key={i}
-                      onClick={() => handleSend(q)}
-                      className="text-xs px-3 py-1.5 rounded-full border border-border bg-background text-muted-foreground hover:bg-primary/10 hover:text-primary hover:border-primary/30 transition-all"
-                    >
-                      {q}
-                    </button>
-                  ))}
-                </div>
-              )}
-
-              {/* Input */}
-              <div className="px-4 py-3 border-t border-border bg-background/80">
-                <form
-                  onSubmit={(e) => { e.preventDefault(); handleSend(); }}
-                  className="flex items-center gap-2"
-                >
-                  <input
-                    type="text"
-                    value={input}
-                    onChange={(e) => setInput(e.target.value)}
-                    placeholder="Type your message..."
-                    className="flex-1 bg-muted rounded-xl px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 transition-all"
-                  />
-                  <Button
-                    type="submit"
-                    size="icon"
-                    disabled={!input.trim() || isTyping}
-                    className="gradient-primary text-primary-foreground rounded-xl h-10 w-10 hover:opacity-90 disabled:opacity-40"
-                  >
-                    <Send size={16} />
-                  </Button>
-                </form>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      </section>
       {/* Embedded AI Control Center (Moved from Hero) */}
       <section className="max-w-7xl mx-auto px-4 py-16">
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }}>
@@ -509,13 +374,127 @@ const HomePage: React.FC = () => {
       </footer>
 
       {/* Floating Help Chatbot */}
-      <a href="#chat" className="fixed bottom-6 right-6 z-50 group">
-        <div className="w-14 h-14 rounded-full bg-accent text-accent-foreground shadow-2xl flex items-center justify-center hover:scale-110 transition-transform border-[3px] border-white/40 cursor-pointer overflow-hidden relative">
-          <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity" />
-          <MessageSquare size={26} strokeWidth={2.5} className="mt-0.5 mr-0.5 relative z-10 drop-shadow-sm" />
-          <span className="absolute top-0 right-0 w-3 h-3 bg-success rounded-full border-2 border-accent" />
-        </div>
-      </a>
+      <div className="fixed bottom-6 right-6 z-[100] flex flex-col items-end">
+        <AnimatePresence>
+          {showChatbot && (
+            <motion.div
+              initial={{ opacity: 0, y: 20, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 20, scale: 0.95 }}
+              className="mb-4 w-80 sm:w-[380px] h-[500px] bg-card rounded-2xl shadow-2xl border border-border flex flex-col overflow-hidden relative"
+            >
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-accent/5 to-background pointer-events-none" />
+              
+              <div className="flex items-center justify-between px-4 py-3 border-b border-border bg-muted/80 backdrop-blur-sm relative z-10">
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-full gradient-primary flex items-center justify-center shadow-inner">
+                    <Bot size={16} className="text-primary-foreground" />
+                  </div>
+                  <div>
+                    <h3 className="font-display font-semibold text-sm leading-tight text-foreground">IIST System Support</h3>
+                    <p className="text-[10px] text-muted-foreground flex items-center gap-1.5 mt-0.5">
+                      <span className="w-1.5 h-1.5 bg-success rounded-full animate-pulse" /> Online
+                    </p>
+                  </div>
+                </div>
+                <button onClick={() => setShowChatbot(false)} className="text-muted-foreground hover:text-foreground transition-colors p-1">
+                  <X size={18} />
+                </button>
+              </div>
+
+              <div className="flex-1 overflow-y-auto px-4 py-4 space-y-4 relative z-10 scrollbar-hide">
+                <AnimatePresence>
+                  {messages.map((msg) => (
+                    <motion.div
+                      key={msg.id}
+                      initial={{ opacity: 0, y: 8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.25 }}
+                      className={`flex gap-2.5 ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
+                    >
+                      {msg.role === 'assistant' && (
+                        <div className="w-6 h-6 rounded-full gradient-primary flex-shrink-0 flex items-center justify-center mt-0.5">
+                          <Bot size={12} className="text-primary-foreground" />
+                        </div>
+                      )}
+                      <div
+                        className={`max-w-[80%] rounded-2xl px-4 py-2.5 text-sm leading-relaxed whitespace-pre-line ${
+                          msg.role === 'user'
+                            ? 'bg-primary text-primary-foreground rounded-br-md shadow-sm'
+                            : 'bg-muted text-foreground rounded-bl-md shadow-sm border border-border/50'
+                        }`}
+                      >
+                        {msg.content.split(/(\*\*.*?\*\*)/).map((part, i) =>
+                          part.startsWith('**') && part.endsWith('**') ? (
+                            <strong key={i} className="font-semibold">{part.slice(2, -2)}</strong>
+                          ) : (
+                            <span key={i}>{part}</span>
+                          )
+                        )}
+                      </div>
+                    </motion.div>
+                  ))}
+                </AnimatePresence>
+
+                {isTyping && (
+                  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex gap-2.5">
+                    <div className="w-6 h-6 rounded-full gradient-primary flex-shrink-0 flex items-center justify-center">
+                      <Bot size={12} className="text-primary-foreground" />
+                    </div>
+                    <div className="bg-muted rounded-2xl rounded-bl-md px-4 py-3 flex items-center gap-1">
+                      <span className="w-1h h-1.5 rounded-full bg-muted-foreground/50 animate-bounce" style={{ animationDelay: '0ms' }} />
+                      <span className="w-1.5 h-1.5 rounded-full bg-muted-foreground/50 animate-bounce" style={{ animationDelay: '150ms' }} />
+                      <span className="w-1.5 h-1.5 rounded-full bg-muted-foreground/50 animate-bounce" style={{ animationDelay: '300ms' }} />
+                    </div>
+                  </motion.div>
+                )}
+                <div ref={chatEndRef} />
+              </div>
+
+              {messages.length <= 1 && (
+                <div className="px-4 pb-2 flex flex-wrap gap-2 relative z-10">
+                  {suggestedQuestions.map((q, i) => (
+                    <button
+                      key={i}
+                      onClick={() => handleSend(q)}
+                      className="text-[11px] px-3 py-1.5 rounded-full border border-border bg-background text-muted-foreground hover:bg-primary/10 hover:text-primary hover:border-primary/30 transition-all text-left"
+                    >
+                      {q}
+                    </button>
+                  ))}
+                </div>
+              )}
+
+              <div className="px-3 py-3 border-t border-border bg-background/80 relative z-10">
+                <form
+                  onSubmit={(e) => { e.preventDefault(); handleSend(); }}
+                  className="flex items-center gap-2"
+                >
+                  <input
+                    type="text"
+                    value={input}
+                    onChange={(e) => setInput(e.target.value)}
+                    placeholder="Type your message..."
+                    className="flex-1 bg-muted rounded-xl px-4 py-2 text-[13px] text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 transition-all"
+                  />
+                  <Button
+                    type="submit"
+                    size="icon"
+                    disabled={!input.trim() || isTyping}
+                    className="gradient-primary text-primary-foreground rounded-xl h-9 w-9 hover:opacity-90 disabled:opacity-40"
+                  >
+                    <Send size={14} />
+                  </Button>
+                </form>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        <button onClick={() => setShowChatbot(!showChatbot)} className="w-[52px] h-[52px] rounded-full gradient-primary text-white shadow-xl flex items-center justify-center hover:scale-105 active:scale-95 transition-all outline-none">
+          {showChatbot ? <X size={24} /> : <MessageSquare size={24} />}
+        </button>
+      </div>
 
     </div>
   );
