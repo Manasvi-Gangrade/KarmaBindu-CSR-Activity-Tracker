@@ -74,17 +74,32 @@ const HomePage: React.FC = () => {
     {
       id: 0,
       role: 'assistant',
-      content: 'Hi! 👋 I am the **IIST CSR Activity Tracker Assistant**. Ask me anything about our community service activities, NAAC criteria, volunteer hours, or accreditation reports.',
+      content: 'नमस्ते! I am **KarmaBindu (कर्मबिंदु)**, your AI-powered CSR guide. Ask me anything about our community service activities, NAAC criteria, or volunteer reports.',
     },
   ]);
   const [input, setInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
-  const [showChatbot, setShowChatbot] = useState(false);
   const chatEndRef = useRef<HTMLDivElement>(null);
+
+  const [helpMessages, setHelpMessages] = useState<ChatMessage[]>([
+    {
+      id: 0,
+      role: 'assistant',
+      content: 'Hi! I am the CSR System Guide. Having trouble logging in or finding a feature?',
+    },
+  ]);
+  const [helpInput, setHelpInput] = useState('');
+  const [helpIsTyping, setHelpIsTyping] = useState(false);
+  const helpChatEndRef = useRef<HTMLDivElement>(null);
+  const [showChatbot, setShowChatbot] = useState(false);
 
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, isTyping]);
+
+  useEffect(() => {
+    helpChatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [helpMessages, helpIsTyping]);
 
   const handleSend = (text?: string) => {
     const msg = text || input.trim();
@@ -94,7 +109,6 @@ const HomePage: React.FC = () => {
     setInput('');
     setIsTyping(true);
 
-    // Simulated AI response
     setTimeout(() => {
       const responses: Record<string, string> = {
         'What CSR activities were conducted this year?':
@@ -109,12 +123,31 @@ const HomePage: React.FC = () => {
       const reply =
         responses[msg] ||
         `Great question! Based on IIST's CSR records, I can help you with detailed analytics, NAAC-aligned reports, and activity documentation. For specific data, please log into the dashboard or refine your query.`;
-      setMessages((prev) => [
-        ...prev,
-        { id: Date.now(), role: 'assistant', content: reply },
-      ]);
+      setMessages((prev) => [...prev, { id: Date.now(), role: 'assistant', content: reply }]);
       setIsTyping(false);
     }, 1200);
+  };
+
+  const handleHelpSend = (text?: string) => {
+    const msg = text || helpInput.trim();
+    if (!msg) return;
+    setHelpMessages((prev) => [...prev, { id: Date.now(), role: 'user', content: msg }]);
+    setHelpInput('');
+    setHelpIsTyping(true);
+
+    setTimeout(() => {
+      let reply = "The system is functioning normally. Please navigate to the appropriate module. Contact admin@demo.com for further assistance.";
+      const m = msg.toLowerCase();
+      if (m.includes('login') || m.includes('sign in')) {
+        reply = "You can log into the system via the Quick Portals above. Click on Student, Faculty, Admin, or NAAC.";
+      } else if (m.includes('password')) {
+        reply = "The default password for all demo accounts is 'demo123'.";
+      } else if (m.includes('working') || m.includes('bug')) {
+        reply = "Refresh the page or clear your cache if you face UI issues. The AI agents might take a moment to compute logic.";
+      }
+      setHelpMessages((prev) => [...prev, { id: Date.now(), role: 'assistant', content: reply }]);
+      setHelpIsTyping(false);
+    }, 1000);
   };
 
   const { ttsEnabled, setTtsEnabled } = useTTS();
@@ -169,15 +202,19 @@ const HomePage: React.FC = () => {
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
 
 
-            <h1 className="font-display text-2xl md:text-4xl lg:text-5xl font-extrabold text-foreground leading-tight mb-4 tracking-tight">
-              Indore Institute of Science & Technology
+            <h1 className="font-display text-4xl md:text-6xl lg:text-7xl font-black text-foreground tracking-tighter leading-[0.9] mb-6">
+              <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary via-accent to-primary animate-gradient-x">Karma</span>
+              <span className="text-foreground">Bindu</span>
             </h1>
-            <p className="text-foreground/80 text-xl md:text-2xl font-medium max-w-2xl mx-auto mb-3">
-              AI-Powered CSR Activity Tracker
-            </p>
-            <p className="text-muted-foreground text-base max-w-xl mx-auto mb-8">
-              Smart Documentation, Analytics & Reporting Agent for NAAC/NBA Compliance
-            </p>
+            <div className="flex flex-col items-center gap-2 mb-8">
+              <p className="text-foreground/90 text-lg md:text-xl font-bold tracking-tight uppercase border-y border-border/50 py-1 px-4 blur-in">
+                IIST CSR Activity Tracker
+              </p>
+              <p className="text-muted-foreground text-sm md:text-base max-w-lg mx-auto font-medium">
+                The Focal Point for Institutional Social Responsibility, 
+                <br />Smart Documentation & NAAC/NBA Impact Reporting
+              </p>
+            </div>
           </motion.div>
           {/* Moving Image Gallery (NSS Activities Placeholder) */}
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }} className="relative w-full max-w-7xl mx-auto mt-12 overflow-hidden h-36 md:h-48">
@@ -258,7 +295,10 @@ const HomePage: React.FC = () => {
             { role: 'Faculty', desc: 'Approve Volunteer Hours', icon: BookOpen, theme: 'bg-primary text-primary-foreground border-primary shadow-primary/20' },
             { role: 'Student', desc: 'Log CSR Activities', icon: User, theme: 'bg-[#FFB800] text-[#4A3400] border-[#FFB800] shadow-[#FFB800]/20' },
           ].map((tab, i) => (
-            <div key={i} className="group block text-left" onClick={() => window.location.href = '/login'}>
+            <div key={i} className="group block text-left" onClick={() => {
+                localStorage.removeItem('csr_user');
+                window.location.href = '/login';
+            }}>
               <div className={`${tab.theme} rounded-2xl p-6 border-2 hover:-translate-y-1 hover:shadow-2xl transition-all duration-300 h-full w-full`}>
                 <div className="flex items-center gap-3 mb-3">
                   <div className="p-2.5 rounded-xl bg-white/20 text-inherit backdrop-blur-sm shadow-sm">
@@ -277,6 +317,138 @@ const HomePage: React.FC = () => {
         </motion.div>
       </section>
 
+
+      {/* AI Chat Section */}
+      <section id="chat" className="relative py-20 overflow-hidden mt-6">
+        <div className="absolute inset-0 bg-gradient-to-b from-muted/50 via-muted/30 to-background" />
+        <div className="relative max-w-4xl mx-auto px-4">
+          <div className="text-center mb-10">
+            <motion.div initial={{ opacity: 0, y: 15 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
+              <span className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-accent/20 text-accent-foreground text-sm font-bold uppercase tracking-wider mb-4 border border-accent/30 shadow-sm">
+                Knowledge Base
+              </span>
+              <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground mb-3">AI Assistant</h2>
+              <p className="text-muted-foreground max-w-lg mx-auto">
+                Ask questions about CSR activities, NAAC criteria, or get instant analytics
+              </p>
+            </motion.div>
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }} transition={{ delay: 0.15 }}
+            className="relative"
+          >
+            <div className="absolute -inset-1 rounded-3xl bg-gradient-to-r from-primary/20 via-accent/20 to-primary/20 blur-lg opacity-50" />
+            <div className="relative rounded-2xl border border-border bg-card shadow-xl overflow-hidden flex flex-col" style={{ height: '520px' }}>
+              <div className="flex items-center gap-3 px-5 py-3.5 border-b border-border bg-muted/30">
+                <div className="w-9 h-9 rounded-full gradient-primary flex items-center justify-center">
+                  <Bot size={18} className="text-primary-foreground" />
+                </div>
+                <div>
+                  <p className="font-display font-semibold text-foreground text-sm">CSR KarmaBindu</p>
+                  <p className="text-muted-foreground text-xs">AI-Powered Institutional Social Responsibility Agent</p>
+                </div>
+                <div className="ml-auto flex items-center gap-1.5">
+                  <span className="w-2 h-2 rounded-full bg-success animate-pulse" />
+                  <span className="text-xs text-muted-foreground">Online</span>
+                </div>
+              </div>
+
+              <div className="flex-1 overflow-y-auto px-5 py-4 space-y-4">
+                <AnimatePresence>
+                  {messages.map((msg) => (
+                    <motion.div
+                      key={msg.id}
+                      initial={{ opacity: 0, y: 8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.25 }}
+                      className={`flex gap-2.5 ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
+                    >
+                      {msg.role === 'assistant' && (
+                        <div className="w-7 h-7 rounded-full gradient-primary flex-shrink-0 flex items-center justify-center mt-0.5">
+                          <Bot size={14} className="text-primary-foreground" />
+                        </div>
+                      )}
+                      <div
+                        className={`max-w-[75%] rounded-2xl px-4 py-2.5 text-sm leading-relaxed whitespace-pre-line ${
+                          msg.role === 'user'
+                            ? 'bg-primary text-primary-foreground rounded-br-md'
+                            : 'bg-muted text-foreground rounded-bl-md'
+                        }`}
+                      >
+                        {msg.content.split(/(\*\*.*?\*\*)/).map((part, i) =>
+                          part.startsWith('**') && part.endsWith('**') ? (
+                            <strong key={i} className="font-semibold">{part.slice(2, -2)}</strong>
+                          ) : (
+                            <span key={i}>{part}</span>
+                          )
+                        )}
+                      </div>
+                      {msg.role === 'user' && (
+                        <div className="w-7 h-7 rounded-full bg-secondary flex-shrink-0 flex items-center justify-center mt-0.5">
+                          <User size={14} className="text-secondary-foreground" />
+                        </div>
+                      )}
+                    </motion.div>
+                  ))}
+                </AnimatePresence>
+
+                {isTyping && (
+                  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex gap-2.5">
+                    <div className="w-7 h-7 rounded-full gradient-primary flex-shrink-0 flex items-center justify-center">
+                      <Bot size={14} className="text-primary-foreground" />
+                    </div>
+                    <div className="bg-muted rounded-2xl rounded-bl-md px-4 py-3 flex items-center gap-1">
+                      <span className="w-1.5 h-1.5 rounded-full bg-muted-foreground/50 animate-bounce" style={{ animationDelay: '0ms' }} />
+                      <span className="w-1.5 h-1.5 rounded-full bg-muted-foreground/50 animate-bounce" style={{ animationDelay: '150ms' }} />
+                      <span className="w-1.5 h-1.5 rounded-full bg-muted-foreground/50 animate-bounce" style={{ animationDelay: '300ms' }} />
+                    </div>
+                  </motion.div>
+                )}
+                <div ref={chatEndRef} />
+              </div>
+
+              {messages.length <= 1 && (
+                <div className="px-5 pb-2 flex flex-wrap gap-2">
+                  {suggestedQuestions.map((q, i) => (
+                    <button
+                      key={i}
+                      onClick={() => handleSend(q)}
+                      className="text-xs px-3 py-1.5 rounded-full border border-border bg-background text-muted-foreground hover:bg-primary/10 hover:text-primary hover:border-primary/30 transition-all font-medium"
+                    >
+                      {q}
+                    </button>
+                  ))}
+                </div>
+              )}
+
+              <div className="px-4 py-3 border-t border-border bg-background/80">
+                <form
+                  onSubmit={(e) => { e.preventDefault(); handleSend(); }}
+                  className="flex items-center gap-2"
+                >
+                  <input
+                    type="text"
+                    value={input}
+                    onChange={(e) => setInput(e.target.value)}
+                    placeholder="Type your message..."
+                    className="flex-1 bg-muted rounded-xl px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 transition-all"
+                  />
+                  <Button
+                    type="submit"
+                    size="icon"
+                    disabled={!input.trim() || isTyping}
+                    className="gradient-primary text-primary-foreground rounded-xl h-10 w-10 hover:opacity-90 disabled:opacity-40 shadow-sm"
+                  >
+                    <Send size={16} />
+                  </Button>
+                </form>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
 
       {/* Embedded AI Control Center (Moved from Hero) */}
       <section className="max-w-7xl mx-auto px-4 py-16">
@@ -367,8 +539,8 @@ const HomePage: React.FC = () => {
               </div>
             </div>
           </div>
-          <div className="border-t border-sidebar-border pt-6 text-center text-xs text-sidebar-foreground/40">
-            © 2026 Indore Institute of Science & Technology. CSR Activity Tracker. All rights reserved.
+          <div className="border-t border-sidebar-border pt-6 text-center text-xs text-sidebar-foreground/40 font-medium">
+            © 2026 IIST KarmaBindu (कर्मबिंदु) | Digital Institutional Social Responsibility Unit.
           </div>
         </div>
       </footer>
@@ -404,7 +576,7 @@ const HomePage: React.FC = () => {
 
               <div className="flex-1 overflow-y-auto px-4 py-4 space-y-4 relative z-10 scrollbar-hide">
                 <AnimatePresence>
-                  {messages.map((msg) => (
+                  {helpMessages.map((msg) => (
                     <motion.div
                       key={msg.id}
                       initial={{ opacity: 0, y: 8 }}
@@ -436,27 +608,27 @@ const HomePage: React.FC = () => {
                   ))}
                 </AnimatePresence>
 
-                {isTyping && (
+                {helpIsTyping && (
                   <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex gap-2.5">
                     <div className="w-6 h-6 rounded-full gradient-primary flex-shrink-0 flex items-center justify-center">
                       <Bot size={12} className="text-primary-foreground" />
                     </div>
                     <div className="bg-muted rounded-2xl rounded-bl-md px-4 py-3 flex items-center gap-1">
-                      <span className="w-1h h-1.5 rounded-full bg-muted-foreground/50 animate-bounce" style={{ animationDelay: '0ms' }} />
+                      <span className="w-1.5 h-1.5 rounded-full bg-muted-foreground/50 animate-bounce" style={{ animationDelay: '0ms' }} />
                       <span className="w-1.5 h-1.5 rounded-full bg-muted-foreground/50 animate-bounce" style={{ animationDelay: '150ms' }} />
                       <span className="w-1.5 h-1.5 rounded-full bg-muted-foreground/50 animate-bounce" style={{ animationDelay: '300ms' }} />
                     </div>
                   </motion.div>
                 )}
-                <div ref={chatEndRef} />
+                <div ref={helpChatEndRef} />
               </div>
 
-              {messages.length <= 1 && (
+              {helpMessages.length <= 1 && (
                 <div className="px-4 pb-2 flex flex-wrap gap-2 relative z-10">
-                  {suggestedQuestions.map((q, i) => (
+                  {['How do I log in?', 'What is the default password?'].map((q, i) => (
                     <button
                       key={i}
-                      onClick={() => handleSend(q)}
+                      onClick={() => handleHelpSend(q)}
                       className="text-[11px] px-3 py-1.5 rounded-full border border-border bg-background text-muted-foreground hover:bg-primary/10 hover:text-primary hover:border-primary/30 transition-all text-left"
                     >
                       {q}
@@ -467,20 +639,20 @@ const HomePage: React.FC = () => {
 
               <div className="px-3 py-3 border-t border-border bg-background/80 relative z-10">
                 <form
-                  onSubmit={(e) => { e.preventDefault(); handleSend(); }}
+                  onSubmit={(e) => { e.preventDefault(); handleHelpSend(); }}
                   className="flex items-center gap-2"
                 >
                   <input
                     type="text"
-                    value={input}
-                    onChange={(e) => setInput(e.target.value)}
-                    placeholder="Type your message..."
-                    className="flex-1 bg-muted rounded-xl px-4 py-2 text-[13px] text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 transition-all"
+                    value={helpInput}
+                    onChange={(e) => setHelpInput(e.target.value)}
+                    placeholder="Type your issue..."
+                    className="flex-1 bg-muted rounded-xl px-4 py-2 text-[13px] text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 transition-all border border-transparent focus:border-border"
                   />
                   <Button
                     type="submit"
                     size="icon"
-                    disabled={!input.trim() || isTyping}
+                    disabled={!helpInput.trim() || helpIsTyping}
                     className="gradient-primary text-primary-foreground rounded-xl h-9 w-9 hover:opacity-90 disabled:opacity-40"
                   >
                     <Send size={14} />

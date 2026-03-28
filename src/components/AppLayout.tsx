@@ -55,9 +55,12 @@ const AppLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
           <div className="w-10 h-10 rounded-xl gradient-primary flex items-center justify-center shrink-0 shadow-sm">
             <Leaf size={22} className="text-primary-foreground" />
           </div>
-          <div className="hidden sm:block">
-            <h1 className="font-display font-extrabold text-base text-foreground leading-tight tracking-tight">IIST CSR</h1>
-            <p className="text-[11px] font-medium text-muted-foreground uppercase tracking-widest">Command Center</p>
+          <div className="hidden sm:block leading-none">
+            <h1 className="font-display font-black text-lg tracking-tighter uppercase leading-none">
+              <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">Karma</span>
+              <span className="text-foreground">Bindu</span>
+            </h1>
+            <p className="text-[9px] font-bold text-muted-foreground uppercase tracking-[0.2em] mt-0.5 opacity-70">IIST CSR UNIT</p>
           </div>
         </div>
 

@@ -15,6 +15,25 @@ const StudentDashboard: React.FC = () => {
 
   return (
     <div className="space-y-6">
+      {/* Live Impact Ticker */}
+      <div className="bg-primary/5 border-y border-primary/10 py-2 -mx-4 lg:-mx-6 overflow-hidden relative">
+        <motion.div 
+          animate={{ x: [0, -2000] }}
+          transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
+          className="flex whitespace-nowrap gap-12 text-[11px] font-bold uppercase tracking-widest text-primary/70"
+        >
+          {[
+            "RECENT: Digital Literacy workshop in Dhar district completed successfully (500+ beneficiaries)",
+            "UPCOMING: Blood donation drive scheduled for next Monday @ IIST Campus",
+            "ALERT: AI & ML Department leads the weekly leaderboard with 1540 XP",
+            "NOTIFY: New NAAC Criterion III reporting standards successfully integrated across units",
+          ].map((text, i) => (
+            <span key={i} className="flex items-center gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" /> {text}
+            </span>
+          ))}
+        </motion.div>
+      </div>
       <div>
         <h1 className="font-display text-2xl font-bold">Hi, {user?.name?.split(' ')[0]} 👋</h1>
         <p className="text-muted-foreground text-sm">Track your volunteer hours and explore upcoming CSR activities.</p>

@@ -79,7 +79,7 @@ const Login: React.FC = () => {
           </div>
           <h1 className="font-display text-4xl font-bold text-white mb-2">{getRoleTitle()}</h1>
           <p className="text-white/70 text-lg leading-relaxed">
-            Secure access to the IIST CSR Activity Tracker. Document community impact for NAAC accreditation.
+            Secure access to **IIST KarmaBindu (कर्मबिंदु)**. The focal point for autonomous social responsibility & impact tracking.
           </p>
         </motion.div>
       </div>
@@ -94,7 +94,10 @@ const Login: React.FC = () => {
             <div className="w-10 h-10 rounded-xl gradient-primary flex items-center justify-center shadow-md">
               <Leaf size={22} className="text-primary-foreground" />
             </div>
-            <h1 className="font-display text-xl font-bold tracking-tight">IIST CSR Tracker</h1>
+            <h1 className="font-display text-xl font-bold tracking-tight">
+              <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">Karma</span>
+              <span className="text-foreground">Bindu</span>
+            </h1>
           </div>
 
           <h2 className="font-display text-3xl font-extrabold mb-2 text-foreground">Welcome back</h2>

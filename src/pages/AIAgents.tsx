@@ -38,6 +38,7 @@ const AIAgents: React.FC = () => {
   // Grants State
   const [draftingGrant, setDraftingGrant] = useState(false);
   const [grantResult, setGrantResult] = useState(false);
+  const [grantDraft, setGrantDraft] = useState('');
 
   const handleAwardBadge = () => {
     setAwardingBadge(true);
@@ -57,10 +58,32 @@ const AIAgents: React.FC = () => {
 
   const handleDraftGrant = () => {
     setDraftingGrant(true);
-    setTimeout(() => {
-      setDraftingGrant(false);
-      setGrantResult(true);
-    }, 2500);
+    setGrantDraft('');
+    setGrantResult(false);
+    
+    const draftContent = `# PROPOSAL: MP State Skill Development Grant 2026\n\n**Institution:** Indore Institute of Science & Technology\n**Department:** Artificial Intelligence & Machine Learning\n**Project:** Digital Literacy & Rural Skill Development Drive\n\n## 1. Executive Summary\nThis proposal outlines a strategic initiative to bridge the digital divide in rural Indore. By leveraging the technical expertise of AI&ML students, we aim to train 5,000+ villagers in basic digital tools, online banking safety, and e-governance services.\n\n## 2. Methodology\n- Phase 1: Needs assessment in 15 adopted villages.\n- Phase 2: Creation of mobile training kits.\n- Phase 3: Deployment of student-led weekend workshops.\n\n## 3. Impact Forecast\nWe project a 40% increase in digital literacy rates among the targeted demographic, aligning with the "Digital India" vision and NAAC Criterion III requirements.\n\n## 4. Budgetary Requirements\n- Training Kits: ₹25,000\n- Logistics & Transport: ₹15,000\n- Documentation & Reporting: ₹10,000\n\n**Total Requested: ₹50,000**`;
+
+    let i = 0;
+    const interval = setInterval(() => {
+      setGrantDraft(draftContent.slice(0, i));
+      i+=2;
+      if (i > draftContent.length) {
+        clearInterval(interval);
+        setDraftingGrant(false);
+        setGrantResult(true);
+        toast.success("Grant Proposal Drafted Successfully!");
+      }
+    }, 10);
+  };
+
+  const handleDownloadDraft = () => {
+    const element = document.createElement("a");
+    const file = new Blob([grantDraft], {type: 'text/plain'});
+    element.href = URL.createObjectURL(file);
+    element.download = "MP_Skill_Development_Grant_Proposal.txt";
+    document.body.appendChild(element);
+    element.click();
+    toast.success("Proposal Downloaded!");
   };
 
   const handleNlpAnalyze = () => {
@@ -158,6 +181,14 @@ const AIAgents: React.FC = () => {
                     : 'opacity-90 hover:opacity-100 hover:-translate-y-1'
                 }`}
               >
+                {/* Scanning Line Animation */}
+                {isActive && (
+                  <motion.div 
+                    animate={{ y: [-100, 200] }}
+                    transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
+                    className="absolute inset-x-0 h-1 bg-white/20 blur-sm pointer-events-none z-10"
+                  />
+                )}
                 <div className="absolute -right-4 -top-4 w-24 h-24 bg-white/10 rounded-full blur-2xl group-hover:bg-white/20 transition-all" />
                 <div className="p-2.5 rounded-xl bg-white/20 text-white shadow-sm mb-3 relative z-10">
                   <tab.icon size={22} strokeWidth={2.5} />
@@ -374,16 +405,28 @@ const AIAgents: React.FC = () => {
                   <h3 className="font-bold text-primary mb-2 mt-4 text-lg">Opportunity Detected: Digital Literacy Drive</h3>
                   <p className="text-sm text-muted-foreground mb-4">Based on historical data, this event matches the criteria for the "MP State Skill Development Grant" (up to ₹50,000).</p>
                   
-                  {!grantResult ? (
-                    <Button onClick={handleDraftGrant} disabled={draftingGrant} className="bg-primary hover:bg-primary/90 text-primary-foreground w-full shadow-lg shadow-primary/20 transition-all duration-300">
-                      {draftingGrant ? <Sparkles size={16} className="mr-2 animate-spin" /> : <Sparkles size={16} className="mr-2" />} 
-                      {draftingGrant ? 'Drafting Proposal...' : 'Auto-Draft 5-Page Proposal'}
+                  {!grantResult && !draftingGrant ? (
+                    <Button onClick={handleDraftGrant} className="bg-primary hover:bg-primary/90 text-primary-foreground w-full shadow-lg shadow-primary/20 transition-all duration-300">
+                      <Sparkles size={16} className="mr-2" /> 
+                      Auto-Draft 5-Page Proposal
                     </Button>
                   ) : (
-                    <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="bg-success/10 text-success p-3 rounded-lg border border-success/20 flex flex-col items-center justify-center gap-2">
-                       <span className="font-bold flex items-center gap-2">Draft Ready!</span>
-                       <Button size="sm" variant="outline" className="text-xs bg-transparent border-success/30 hover:bg-success/20 w-fit text-success mx-auto">Download PDF</Button>
-                    </motion.div>
+                    <div className="space-y-4">
+                      <div className="bg-background/80 border border-border rounded-xl p-4 font-mono text-xs h-48 overflow-auto whitespace-pre-wrap leading-relaxed shadow-inner">
+                        {grantDraft}
+                        {draftingGrant && <span className="inline-block w-2 h-4 bg-primary ml-1 animate-pulse" />}
+                      </div>
+                      {grantResult && (
+                        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="flex gap-2">
+                           <Button onClick={handleDownloadDraft} className="flex-1 gradient-primary text-primary-foreground shadow-md">
+                             <Upload size={16} className="mr-2" /> Download Draft (.doc)
+                           </Button>
+                           <Button onClick={() => setGrantResult(false)} variant="outline" className="flex-1">
+                             Regenerate
+                           </Button>
+                        </motion.div>
+                      )}
+                    </div>
                   )}
                 </div>
               </motion.div>
