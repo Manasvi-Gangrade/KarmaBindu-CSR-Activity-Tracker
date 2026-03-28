@@ -142,38 +142,64 @@ const Certificates: React.FC = () => {
   });
 
   const handleDownload = (volunteer: typeof volunteers[0]) => {
-    const certText = `
----------------------------------------------------------
-           CERTIFICATE OF APPRECIATION
----------------------------------------------------------
-
-This is proudly presented to:
-      ${volunteer.name.toUpperCase()}
-
-In recognition of outstanding community service contribution 
-of ${volunteer.totalHours} volunteer hours across ${volunteer.activitiesCount} CSR activities,
-demonstrating dedication to social responsibility and 
-community welfare at IIST KarmaBindu.
-
-Dated: ${new Date().toLocaleDateString('en-IN')}
-Verify: IIST-CSR-${volunteer.id}-${volunteer.enrollmentNo}
-
----------------------------------------------------------
-          Indore Institute of Science & Technology
----------------------------------------------------------
+    const htmlContent = `
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background: #f9f9f9; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .certificate { width: 800px; height: 600px; padding: 50px; background: #fff; border: 20px solid #059669; border-double: 10px; position: relative; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.1); }
+        .cert-header { color: #059669; font-family: 'Playfair Display', serif; font-size: 40px; margin-bottom: 20px; }
+        .cert-sub { color: #666; font-size: 14px; text-transform: uppercase; letter-spacing: 3px; margin-bottom: 40px; }
+        .recipient { font-size: 48px; font-weight: 700; color: #111; border-bottom: 2px solid #ccc; display: inline-block; padding-bottom: 10px; margin-bottom: 30px; }
+        .details { font-size: 18px; line-height: 1.6; color: #444; max-width: 600px; margin: 0 auto 40px; }
+        .metrics { display: flex; justify-content: center; gap: 50px; margin-bottom: 50px; }
+        .metric-item b { font-size: 24px; color: #059669; }
+        .footer { display: flex; justify-content: space-between; align-items: flex-end; margin-top: 40px; }
+        .signature { border-top: 1px solid #ccc; width: 200px; padding-top: 10px; font-size: 12px; color: #666; }
+        .badge { position: absolute; top: -10px; right: 50px; background: #ca8a04; color: white; padding: 20px 10px; font-weight: bold; border-radius: 0 0 40px 40px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+    </style>
+</head>
+<body>
+    <div class="certificate">
+        <div class="badge">NAAC A+<br/>IIST</div>
+        <div class="cert-sub">Indore Institute of Science and Technology</div>
+        <div class="cert-header">Certificate of Appreciation</div>
+        <div class="details">This is proudly presented to</div>
+        <div class="recipient">${volunteer.name}</div>
+        <div class="details">
+            In recognition of outstanding community service contribution of <b>${volunteer.totalHours} volunteer hours</b> 
+            across <b>${volunteer.activitiesCount} CSR activities</b>, demonstrating dedication to 
+            Institutional Social Responsibility under the <b>KarmaBindu</b> Framework.
+        </div>
+        <div class="metrics">
+            <div class="metric-item"><b>${volunteer.totalHours}</b><br/>Hours Logged</div>
+            <div class="metric-item"><b>${volunteer.activitiesCount}</b><br/>Activities</div>
+        </div>
+        <div class="footer">
+            <div class="signature">
+                Date: ${new Date().toLocaleDateString('en-IN')}<br/>
+                Verification ID: IIST-CSR-${volunteer.id}
+            </div>
+            <div class="signature">Principal / Director<br/>IIST CSR Unit</div>
+        </div>
+    </div>
+</body>
+</html>
     `;
 
-    const blob = new Blob([certText], { type: 'text/plain' });
+    const blob = new Blob([htmlContent], { type: 'text/html' });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = `Certificate_${volunteer.name.replace(' ', '_')}.pdf`;
+    link.download = `Certificate_${volunteer.name.replace(/\s+/g, '_')}.html`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
     
-    toast.success(`Certificate downloaded for ${volunteer.name}`);
+    toast.success(`E-Certificate generated for ${volunteer.name}`);
   };
 
   return (
@@ -184,16 +210,40 @@ Verify: IIST-CSR-${volunteer.id}-${volunteer.enrollmentNo}
           <p className="text-muted-foreground text-sm">Preview and download customizable certificates for volunteers</p>
         </div>
         <Button variant="outline" size="sm" onClick={() => {
-          const content = `IIST KarmaBindu CSR Certificate Registry\nGenerated: ${new Date().toLocaleString()}\n\n` + 
-            volunteers.map(v => `${v.name} (${v.enrollmentNo}) - ${v.totalHours} hrs / ${v.activitiesCount} activities`).join('\n');
-          const blob = new Blob([content], { type: 'text/plain' });
+          const content = `
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body { font-family: sans-serif; padding: 40px; }
+        h1 { color: #059669; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+        th { background: #f8f9fa; }
+    </style>
+</head>
+<body>
+    <h1>IIST KarmaBindu CSR Certificate Registry</h1>
+    <p>Generated: ${new Date().toLocaleString()}</p>
+    <table>
+        <thead>
+            <tr><th>Student Name</th><th>Enrollment</th><th>Branch</th><th>Hours</th><th>Activities</th></tr>
+        </thead>
+        <tbody>
+            ${volunteers.map(v => `<tr><td>${v.name}</td><td>${v.enrollmentNo}</td><td>${v.department}</td><td>${v.totalHours}</td><td>${v.activitiesCount}</td></tr>`).join('')}
+        </tbody>
+    </table>
+</body>
+</html>
+          `;
+          const blob = new Blob([content], { type: 'text/html' });
           const url = URL.createObjectURL(blob);
           const link = document.createElement('a');
           link.href = url;
-          link.download = `IIST_CSR_Bulk_Certificates_Registry.pdf`;
+          link.download = `IIST_CSR_Certificate_Registry.html`;
           link.click();
           URL.revokeObjectURL(url);
-          toast.success('Bulk certificates registry downloaded!');
+          toast.success('Bulk certificates registry generated!');
         }}>
           <Download size={14} className="mr-2" />Bulk Download
         </Button>
