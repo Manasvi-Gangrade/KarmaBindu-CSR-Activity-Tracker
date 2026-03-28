@@ -5,6 +5,7 @@ import { Award, Download, Eye, Palette, Search, X, Share2 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
+import { useAuth } from '@/contexts/AuthContext';
 
 type TemplateStyle = 'classic' | 'modern' | 'elegant';
 
@@ -14,12 +15,18 @@ const templateConfig: Record<TemplateStyle, { name: string; border: string; acce
   elegant: { name: 'Elegant Navy', border: 'border-[hsl(220,40%,30%)]', accent: 'hsl(220,40%,30%)', bg: 'hsl(220,20%,97%)', font: 'serif' },
 };
 
-const CertificatePreview: React.FC<{ volunteer: typeof volunteers[0]; template: TemplateStyle; onClose: () => void }> = ({ volunteer, template, onClose }) => {
+const CertificatePreview: React.FC<{ 
+  volunteer: typeof volunteers[0]; 
+  template: TemplateStyle; 
+  onClose: () => void;
+  onDownload: () => void;
+}> = ({ volunteer, template, onClose, onDownload }) => {
   const certRef = useRef<HTMLDivElement>(null);
   const t = templateConfig[template];
 
-  const handleDownload = () => {
-    toast.success(`Certificate downloaded for ${volunteer.name} (${t.name} template)`);
+  const handleWhatsAppShare = () => {
+    const text = `Hi! Check out my CSR Certificate of Appreciation from IIST KarmaBindu! I've completed ${volunteer.totalHours} volunteer hours in ${volunteer.activitiesCount} activities. 🏆`;
+    window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
   };
 
   return (
@@ -37,7 +44,10 @@ const CertificatePreview: React.FC<{ volunteer: typeof volunteers[0]; template: 
         <div className="flex items-center justify-between px-5 py-3 border-b border-border">
           <h3 className="font-display font-semibold text-sm">Certificate Preview — {t.name}</h3>
           <div className="flex items-center gap-2">
-            <Button size="sm" onClick={handleDownload}><Download size={14} className="mr-1.5" />Download PDF</Button>
+            <Button size="sm" variant="outline" className="bg-[#25D366] hover:bg-[#128C7E] text-white border-none" onClick={handleWhatsAppShare}>
+              <Share2 size={14} className="mr-1.5" />Share
+            </Button>
+            <Button size="sm" onClick={onDownload}><Download size={14} className="mr-1.5" />Download PDF</Button>
             <button onClick={onClose} className="p-1.5 rounded-lg hover:bg-muted transition-colors"><X size={18} /></button>
           </div>
         </div>
@@ -117,13 +127,54 @@ const CertificatePreview: React.FC<{ volunteer: typeof volunteers[0]; template: 
 };
 
 const Certificates: React.FC = () => {
+  const { user } = useAuth();
   const [search, setSearch] = useState('');
   const [selectedTemplate, setSelectedTemplate] = useState<TemplateStyle>('classic');
   const [previewVolunteer, setPreviewVolunteer] = useState<typeof volunteers[0] | null>(null);
 
-  const filtered = volunteers.filter(v =>
-    v.name.toLowerCase().includes(search.toLowerCase()) || v.department.toLowerCase().includes(search.toLowerCase())
-  );
+  const filtered = volunteers.filter(v => {
+    // Role-based filtering: Students only see themselves
+    if (user?.role === 'student' && v.name !== 'Manasvi Gangrade') return false;
+    
+    const matchSearch = v.name.toLowerCase().includes(search.toLowerCase()) || 
+                       v.department.toLowerCase().includes(search.toLowerCase());
+    return matchSearch;
+  });
+
+  const handleDownload = (volunteer: typeof volunteers[0]) => {
+    const certText = `
+---------------------------------------------------------
+           CERTIFICATE OF APPRECIATION
+---------------------------------------------------------
+
+This is proudly presented to:
+      ${volunteer.name.toUpperCase()}
+
+In recognition of outstanding community service contribution 
+of ${volunteer.totalHours} volunteer hours across ${volunteer.activitiesCount} CSR activities,
+demonstrating dedication to social responsibility and 
+community welfare at IIST KarmaBindu.
+
+Dated: ${new Date().toLocaleDateString('en-IN')}
+Verify: IIST-CSR-${volunteer.id}-${volunteer.enrollmentNo}
+
+---------------------------------------------------------
+          Indore Institute of Science & Technology
+---------------------------------------------------------
+    `;
+
+    const blob = new Blob([certText], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `Certificate_${volunteer.name.replace(' ', '_')}.pdf`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+    
+    toast.success(`Certificate downloaded for ${volunteer.name}`);
+  };
 
   return (
     <div className="space-y-6">
@@ -132,7 +183,18 @@ const Certificates: React.FC = () => {
           <h1 className="font-display text-2xl font-bold">Certificate Generator</h1>
           <p className="text-muted-foreground text-sm">Preview and download customizable certificates for volunteers</p>
         </div>
-        <Button variant="outline" size="sm" onClick={() => toast.success('Bulk certificates generated!')}>
+        <Button variant="outline" size="sm" onClick={() => {
+          const content = `IIST KarmaBindu CSR Certificate Registry\nGenerated: ${new Date().toLocaleString()}\n\n` + 
+            volunteers.map(v => `${v.name} (${v.enrollmentNo}) - ${v.totalHours} hrs / ${v.activitiesCount} activities`).join('\n');
+          const blob = new Blob([content], { type: 'text/plain' });
+          const url = URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = url;
+          link.download = `IIST_CSR_Bulk_Certificates_Registry.pdf`;
+          link.click();
+          URL.revokeObjectURL(url);
+          toast.success('Bulk certificates registry downloaded!');
+        }}>
           <Download size={14} className="mr-2" />Bulk Download
         </Button>
       </div>
@@ -189,10 +251,13 @@ const Certificates: React.FC = () => {
               <Button size="sm" variant="outline" className="flex-1 text-[10px] sm:text-xs px-2" onClick={() => setPreviewVolunteer(v)}>
                 <Eye size={12} className="mr-1 hidden sm:block" />Preview
               </Button>
-              <Button size="sm" className="flex-1 text-[10px] sm:text-xs px-2" onClick={() => toast.success(`Certificate downloaded for ${v.name}`)}>
+              <Button size="sm" className="flex-1 text-[10px] sm:text-xs px-2" onClick={() => handleDownload(v)}>
                 <Download size={12} className="mr-1 hidden sm:block" />DL
               </Button>
-              <Button size="sm" onClick={() => window.open(`https://wa.me/?text=Hi ${v.name}, congratulations on completing ${v.totalHours} volunteer hours! Download your certificate from the dashboard. 🏆`, '_blank')} className="bg-[#25D366] hover:bg-[#128C7E] text-white px-3 shrink-0">
+              <Button size="sm" onClick={() => {
+                const text = `Hi ${v.name}, congratulations on completing ${v.totalHours} volunteer hours! Download your certificate from the dashboard. 🏆`;
+                window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+              }} className="bg-[#25D366] hover:bg-[#128C7E] text-white px-3 shrink-0">
                 <Share2 size={14} />
               </Button>
             </div>
@@ -207,6 +272,7 @@ const Certificates: React.FC = () => {
             volunteer={previewVolunteer}
             template={selectedTemplate}
             onClose={() => setPreviewVolunteer(null)}
+            onDownload={() => handleDownload(previewVolunteer)}
           />
         )}
       </AnimatePresence>

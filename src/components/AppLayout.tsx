@@ -60,7 +60,7 @@ const AppLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
               <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">Karma</span>
               <span className="text-foreground">Bindu</span>
             </h1>
-            <p className="text-[9px] font-bold text-muted-foreground uppercase tracking-[0.2em] mt-0.5 opacity-70">IIST CSR UNIT</p>
+            <p className="text-[8px] font-black text-foreground uppercase tracking-[0.05em] mt-0.5">Indore Institute of Science and Technology</p>
           </div>
         </div>
 

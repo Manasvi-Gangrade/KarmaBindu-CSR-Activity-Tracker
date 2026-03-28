@@ -200,9 +200,14 @@ const HomePage: React.FC = () => {
         <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-background to-background pointer-events-none" />
         <div className="relative max-w-7xl mx-auto px-4 pt-12 pb-8 md:pt-16 md:pb-12 text-center">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
+            <motion.p 
+              initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }}
+              className="text-xl md:text-3xl font-[900] tracking-[0.25em] text-primary uppercase mb-4 block drop-shadow-md"
+            >
+              Indore Institute of Science and Technology
+            </motion.p>
 
-
-            <h1 className="font-display text-4xl md:text-6xl lg:text-7xl font-black text-foreground tracking-tighter leading-[0.9] mb-6">
+            <h1 className="font-display text-4xl md:text-6xl lg:text-8xl font-black text-foreground tracking-tighter leading-[0.85] mb-6">
               <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary via-accent to-primary animate-gradient-x">Karma</span>
               <span className="text-foreground">Bindu</span>
             </h1>

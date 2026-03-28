@@ -118,9 +118,21 @@ const AIAgents: React.FC = () => {
 
   const handleNudge = () => {
     toast.success('Nudge Agent Activated!');
-    setTimeout(() => toast('WhatsApp sent to Rahul Sharma (Mech)'), 500);
-    setTimeout(() => toast('WhatsApp sent to Priya Patel (CSE)'), 1200);
-    setTimeout(() => toast('Email sent to 14 other students in danger zone.'), 2000);
+    
+    const students = [
+      { name: 'Rahul Sharma', phone: '9876543213', dept: 'Mechanical' },
+      { name: 'Priya Patel', phone: '9876543214', dept: 'CSE' }
+    ];
+
+    students.forEach((student, index) => {
+      setTimeout(() => {
+        const text = `Hi ${student.name}, this is the IIST CSR Unit. You currently have low volunteer hours. Please register for upcoming activities like the 'Tree Plantation Drive' to meet NAAC requirements! ✍️`;
+        window.open(`https://wa.me/${student.phone}?text=${encodeURIComponent(text)}`, '_blank');
+        toast(`WhatsApp nudge sent to ${student.name} (${student.dept})`);
+      }, index * 1000);
+    });
+
+    setTimeout(() => toast.info('Email alerts sent to 14 other students in the danger zone.'), 2500);
   };
 
   const handleGenerateReport = () => {

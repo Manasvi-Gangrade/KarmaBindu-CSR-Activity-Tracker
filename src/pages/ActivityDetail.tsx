@@ -2,7 +2,8 @@ import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { activities } from '@/data/mockData';
 import { motion } from 'framer-motion';
-import { ArrowLeft, MapPin, CalendarDays, Users, Clock, Heart, Award, Building2, Target } from 'lucide-react';
+import { ArrowLeft, MapPin, CalendarDays, Users, Clock, Heart, Award, Building2, Target, Share2 } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import { categoryColors, statusColors } from '@/data/mockData';
 
 const ActivityDetail: React.FC = () => {
@@ -27,16 +28,29 @@ const ActivityDetail: React.FC = () => {
       <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }}>
         {/* Header */}
         <div className="bg-card rounded-xl border border-border p-6">
-          <div className="flex flex-wrap gap-2 mb-3">
-            <span className={`text-xs px-2.5 py-1 rounded-full font-medium ${categoryColors[activity.category] || 'bg-muted text-muted-foreground'}`}>
-              {activity.category}
-            </span>
-            <span className={`text-xs px-2.5 py-1 rounded-full font-medium capitalize ${statusColors[activity.status]}`}>
-              {activity.status.replace('_', ' ')}
-            </span>
+          <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+            <div className="flex-1">
+              <div className="flex flex-wrap gap-2 mb-3">
+                <span className={`text-xs px-2.5 py-1 rounded-full font-medium ${categoryColors[activity.category] || 'bg-muted text-muted-foreground'}`}>
+                  {activity.category}
+                </span>
+                <span className={`text-xs px-2.5 py-1 rounded-full font-medium capitalize ${statusColors[activity.status]}`}>
+                  {activity.status.replace('_', ' ')}
+                </span>
+              </div>
+              <h1 className="font-display text-2xl font-bold mb-2">{activity.title}</h1>
+              <p className="text-muted-foreground text-sm leading-relaxed">{activity.description}</p>
+            </div>
+            <Button 
+              onClick={() => {
+                const text = `Check out this CSR Activity at IIST KarmaBindu: ${activity.title} on ${activity.date}. Join us for a meaningful impact! 🌟`;
+                window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+              }}
+              className="bg-[#25D366] hover:bg-[#128C7E] text-white gap-2 shrink-0 py-6 px-6 rounded-xl shadow-lg border-none"
+            >
+              <Share2 size={18} /> Share on WhatsApp
+            </Button>
           </div>
-          <h1 className="font-display text-2xl font-bold mb-2">{activity.title}</h1>
-          <p className="text-muted-foreground text-sm leading-relaxed">{activity.description}</p>
 
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-6">
             {[

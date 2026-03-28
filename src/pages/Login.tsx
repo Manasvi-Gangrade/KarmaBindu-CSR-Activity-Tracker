@@ -74,6 +74,12 @@ const Login: React.FC = () => {
           initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}
           className="relative z-10 text-center max-w-md p-8"
         >
+          <motion.p 
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }}
+            className="text-lg md:text-3xl font-[900] tracking-[0.2em] text-primary uppercase mb-6 block drop-shadow-md"
+          >
+            Indore Institute of Science and Technology
+          </motion.p>
           <div className="w-20 h-20 rounded-2xl bg-white/10 backdrop-blur-md flex items-center justify-center mx-auto mb-8 shadow-glow border border-white/20">
             <Leaf size={40} className="text-white" />
           </div>
@@ -99,6 +105,7 @@ const Login: React.FC = () => {
               <span className="text-foreground">Bindu</span>
             </h1>
           </div>
+          <p className="text-[14px] font-[1000] text-foreground uppercase tracking-[0.1em] mb-8 text-center border-b-2 border-primary/20 pb-3">Indore Institute of Science and Technology</p>
 
           <h2 className="font-display text-3xl font-extrabold mb-2 text-foreground">Welcome back</h2>
           <p className="text-muted-foreground text-sm mb-8 font-medium">Continue logging in to your dashboard</p>
